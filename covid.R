@@ -64,3 +64,42 @@ p1 + geom_line(linewidth=1.2) + scale_y_continuous(breaks=c(0,20,40,60)) +
   labs(titles = '% of vaccinated people',
        x = 'Date',
        y = '% vaccinated people')
+
+data_1 <- data %>% 
+  dplyr::filter(!is.na(people_vaccinated_per_hundred)) %>% 
+  group_by(continent,date) %>% 
+  summarise(vaccinated_per_hundred = mean(people_vaccinated_per_hundred))
+
+p2 <- ggplot(data = data_1, aes(x = date, y = vaccinated_per_hundred, color = continent))
+p2 + geom_line() + scale_y_continuous(breaks=c(0,20,40,60,80,100)) + 
+  labs(titles = '% of vaccinated people',
+       x = 'Date',
+       y = '% vaccinated people')
+
+p2 + geom_smooth() + scale_y_continuous(breaks=c(0,20,40,60,80,100))  + 
+  labs(titles = '% of vaccinated people',
+       x = 'Date',
+       y = '% vaccinated people')
+
+
+data_2 <- data %>% 
+  dplyr::filter(!is.na(people_vaccinated_per_hundred)) %>% 
+  filter(location %in% c("Japan","China", "Hong Kong", "India", "South Korea",
+                         "Singapore","Taiwan","Turkey","Vietnam")) 
+
+p3 <- ggplot(data = data_2, aes(x = date, y = people_vaccinated_per_hundred, color = location))
+p3 + geom_line() + scale_y_continuous(breaks=c(0,20,40,60,80,100)) + 
+  labs(titles = '% of vaccinated people',
+       x = 'Date',
+       y = '% vaccinated people')
+
+### Compare some countries in Asia, the trends show that Singapore is the first country
+### started vaccinating people, where is the first place reached 80% of population
+### getting vaccinated (around September 2021).
+
+### Turkey and India have around 70% of vaccinated population,
+### while other countries show 80% and even 90% of vaccinated population in Asia.
+
+### However, most of countries dramatically increased their vaccinated rate between
+### April 2021 and October 2021. In addition, the stable trend can be seen when the rate 
+### reached to the peak, which is around beginnig of 2022.
